@@ -3,12 +3,53 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package penjualanmobil;
-
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author lab komputer
  */
 public class MenuDataPaket extends javax.swing.JFrame {
+    
+    private DefaultTableModel model = null;
+    private java.sql.PreparedStatement stat;
+    private java.sql.ResultSet rs;
+    koneksi k = new koneksi();
+
+    class paket {
+        String paket, persendp, lamatenor, persenbunga;
+
+        public paket() {
+            paket = textpaket.getText();
+            persendp = textpersendp.getText();
+            lamatenor = textlamatenor.getText();
+            persenbunga = textpersenbunga.getText();
+        }
+    }
+
+    public void Tampiltabel() {
+        model = new DefaultTableModel();
+        model.addColumn("Kode Paket");
+        model.addColumn("Persen DP");
+        model.addColumn("Lama Tenor");
+        model.addColumn("Persen Bunga");
+        tblpaket.setModel(model);
+        try {
+            this.stat = k.getCon().prepareStatement("select * from paket");
+            this.rs = this.stat.executeQuery();
+            while (rs.next()) {
+                Object [] data = {
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4)
+                };
+                model.addRow(data);
+            }
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuDataPaket.class.getName());
 
@@ -16,7 +57,8 @@ public class MenuDataPaket extends javax.swing.JFrame {
      * Creates new form MenuDataPaket
      */
     public MenuDataPaket() {
-        initComponents();
+       initComponents();
+       Tampiltabel();
     }
 
     /**
@@ -30,21 +72,21 @@ public class MenuDataPaket extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        lblpaket = new javax.swing.JLabel();
+        textpaket = new javax.swing.JTextField();
+        labelpersendp = new javax.swing.JLabel();
+        textpersendp = new javax.swing.JTextField();
+        lbllamatenor = new javax.swing.JLabel();
+        textlamatenor = new javax.swing.JTextField();
+        textpersenbunga = new javax.swing.JTextField();
+        lblpersenbunga = new javax.swing.JLabel();
+        lbljudul = new javax.swing.JLabel();
+        btnkembali = new javax.swing.JButton();
+        btntambah = new javax.swing.JButton();
+        btnubah = new javax.swing.JButton();
+        btnhapus = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblpaket = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,28 +94,28 @@ public class MenuDataPaket extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 153));
 
-        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jLabel2.setText("Kode Paket");
+        lblpaket.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        lblpaket.setText("Kode Paket");
 
-        jTextField1.setBackground(new java.awt.Color(255, 204, 255));
+        textpaket.setBackground(new java.awt.Color(255, 204, 255));
 
-        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jLabel3.setText("Persen DP");
+        labelpersendp.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        labelpersendp.setText("Persen DP");
 
-        jTextField2.setBackground(new java.awt.Color(255, 204, 255));
-        jTextField2.addActionListener(this::jTextField2ActionPerformed);
+        textpersendp.setBackground(new java.awt.Color(255, 204, 255));
+        textpersendp.addActionListener(this::textpersendpActionPerformed);
 
-        jLabel4.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jLabel4.setText("Lama Tenor");
+        lbllamatenor.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        lbllamatenor.setText("Lama Tenor");
 
-        jTextField3.setBackground(new java.awt.Color(255, 204, 255));
-        jTextField3.addActionListener(this::jTextField3ActionPerformed);
+        textlamatenor.setBackground(new java.awt.Color(255, 204, 255));
+        textlamatenor.addActionListener(this::textlamatenorActionPerformed);
 
-        jTextField4.setBackground(new java.awt.Color(255, 204, 255));
-        jTextField4.addActionListener(this::jTextField4ActionPerformed);
+        textpersenbunga.setBackground(new java.awt.Color(255, 204, 255));
+        textpersenbunga.addActionListener(this::textpersenbungaActionPerformed);
 
-        jLabel5.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jLabel5.setText("Persen Bunga");
+        lblpersenbunga.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        lblpersenbunga.setText("Persen Bunga");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -82,16 +124,16 @@ public class MenuDataPaket extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(lblpaket)
+                    .addComponent(labelpersendp)
+                    .addComponent(lbllamatenor)
+                    .addComponent(lblpersenbunga))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textpaket, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textpersendp, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textlamatenor, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textpersenbunga, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30))
         );
         jPanel2Layout.setVerticalGroup(
@@ -99,43 +141,45 @@ public class MenuDataPaket extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblpaket)
+                    .addComponent(textpaket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelpersendp)
+                    .addComponent(textpersendp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbllamatenor)
+                    .addComponent(textlamatenor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblpersenbunga)
+                    .addComponent(textpersenbunga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
-        jLabel1.setFont(new java.awt.Font("Script MT Bold", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Halaman Data Paket Kredit");
+        lbljudul.setFont(new java.awt.Font("Script MT Bold", 1, 24)); // NOI18N
+        lbljudul.setForeground(new java.awt.Color(255, 255, 255));
+        lbljudul.setText("Halaman Data Paket Kredit");
 
-        jButton1.setBackground(new java.awt.Color(204, 204, 255));
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jButton1.setText("Kembali");
+        btnkembali.setBackground(new java.awt.Color(204, 204, 255));
+        btnkembali.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        btnkembali.setText("Kembali");
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 102));
-        jButton2.setText("Tambah");
-        jButton2.addActionListener(this::jButton2ActionPerformed);
+        btntambah.setBackground(new java.awt.Color(255, 255, 102));
+        btntambah.setText("Tambah");
+        btntambah.addActionListener(this::btntambahActionPerformed);
 
-        jButton3.setBackground(new java.awt.Color(204, 204, 255));
-        jButton3.setText("Ubah");
+        btnubah.setBackground(new java.awt.Color(204, 204, 255));
+        btnubah.setText("Ubah");
+        btnubah.addActionListener(this::btnubahActionPerformed);
 
-        jButton4.setBackground(new java.awt.Color(255, 204, 255));
-        jButton4.setText("Hapus");
+        btnhapus.setBackground(new java.awt.Color(255, 204, 255));
+        btnhapus.setText("Hapus");
+        btnhapus.addActionListener(this::btnhapusActionPerformed);
 
-        jTable1.setBackground(new java.awt.Color(255, 204, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblpaket.setBackground(new java.awt.Color(255, 204, 255));
+        tblpaket.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -146,7 +190,12 @@ public class MenuDataPaket extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tblpaket.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblpaketMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblpaket);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -156,18 +205,18 @@ public class MenuDataPaket extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(37, 37, 37)
-                        .addComponent(jButton1)
+                        .addComponent(btnkembali)
                         .addGap(48, 48, 48)
-                        .addComponent(jLabel1))
+                        .addComponent(lbljudul))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(59, 59, 59)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton2)
+                                .addComponent(btntambah)
                                 .addGap(113, 113, 113)
-                                .addComponent(jButton3)
+                                .addComponent(btnubah)
                                 .addGap(106, 106, 106)
-                                .addComponent(jButton4))
+                                .addComponent(btnhapus))
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(110, Short.MAX_VALUE))
@@ -177,15 +226,15 @@ public class MenuDataPaket extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton1))
+                    .addComponent(lbljudul)
+                    .addComponent(btnkembali))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btntambah)
+                    .addComponent(btnubah)
+                    .addComponent(btnhapus))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
@@ -211,21 +260,70 @@ public class MenuDataPaket extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void textpersendpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textpersendpActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_textpersendpActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void textlamatenorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textlamatenorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_textlamatenorActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void textpersenbungaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textpersenbungaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_textpersenbungaActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btntambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntambahActionPerformed
+       try {
+        paket p = new paket();
+        this.stat = k.getCon().prepareStatement("insert into paket values(?,?,?,?)");
+        stat.setString(1, p.paket);
+        stat.setString(2, p.persendp);
+        stat.setString(3, p.lamatenor);
+        stat.setString(4, p.persenbunga);
+        stat.executeUpdate();
+        javax.swing.JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
+        Tampiltabel();
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(null, e.getMessage());
+    }
+    }//GEN-LAST:event_btntambahActionPerformed
+
+    private void btnubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnubahActionPerformed
+       try {
+        paket p = new paket();
+        this.stat = k.getCon().prepareStatement("update paket set uang_muka=?, tenor=?, bunga_cicilan=? where kode_paket=?");
+        stat.setString(1, p.persendp);
+        stat.setString(2, p.lamatenor);
+        stat.setString(3, p.persenbunga);
+        stat.setString(4, p.paket);
+        stat.executeUpdate();
+        javax.swing.JOptionPane.showMessageDialog(null, "Data berhasil diubah");
+        Tampiltabel();
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(null, e.getMessage());
+    }
+    }//GEN-LAST:event_btnubahActionPerformed
+
+    private void btnhapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhapusActionPerformed
+       try {
+        paket p = new paket();
+        this.stat = k.getCon().prepareStatement("delete from paket where kode_paket=?");
+        stat.setString(1, p.paket);
+        stat.executeUpdate();
+        javax.swing.JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+        Tampiltabel();
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(null, e.getMessage());
+    }
+    }//GEN-LAST:event_btnhapusActionPerformed
+
+    private void tblpaketMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblpaketMouseClicked
+        textpaket.setText(model.getValueAt(tblpaket.getSelectedRow(), 0).toString());
+    textpersendp.setText(model.getValueAt(tblpaket.getSelectedRow(), 1).toString());
+    textlamatenor.setText(model.getValueAt(tblpaket.getSelectedRow(), 2).toString());
+    textpersenbunga.setText(model.getValueAt(tblpaket.getSelectedRow(), 3).toString());
+
+    }//GEN-LAST:event_tblpaketMouseClicked
 
     /**
      * @param args the command line arguments
@@ -244,7 +342,6 @@ public class MenuDataPaket extends javax.swing.JFrame {
                 }
             }
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -253,22 +350,22 @@ public class MenuDataPaket extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JButton btnhapus;
+    private javax.swing.JButton btnkembali;
+    private javax.swing.JButton btntambah;
+    private javax.swing.JButton btnubah;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel labelpersendp;
+    private javax.swing.JLabel lbljudul;
+    private javax.swing.JLabel lbllamatenor;
+    private javax.swing.JLabel lblpaket;
+    private javax.swing.JLabel lblpersenbunga;
+    private javax.swing.JTable tblpaket;
+    private javax.swing.JTextField textlamatenor;
+    private javax.swing.JTextField textpaket;
+    private javax.swing.JTextField textpersenbunga;
+    private javax.swing.JTextField textpersendp;
     // End of variables declaration//GEN-END:variables
 }

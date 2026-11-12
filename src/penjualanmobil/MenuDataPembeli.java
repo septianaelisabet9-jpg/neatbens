@@ -3,22 +3,65 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package penjualanmobil;
-
+import javax.swing.table.DefaultTableModel;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 /**
  *
  * @author lab komputer
  */
 public class MenuDataPembeli extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuDataPembeli.class.getName());
+    private DefaultTableModel model=null;
+    private PreparedStatement stat;
+    private ResultSet rs;
+    koneksi k = new koneksi();
+    
+    
 
     /**
      * Creates new form MenuDataPembeli
      */
     public MenuDataPembeli() {
-        initComponents();
+       initComponents();
+       k.connect();
+       Tampiltabel();
     }
 
+    class pembeli {
+        String ktp, nama, alamat, telp;
+        
+        public pembeli() {
+            this.ktp = textktp.getText();
+            this.nama = textnama.getText();
+            this.alamat = textalamat.getText();
+            this.telp = textnohp.getText(); 
+        }
+    } 
+public void Tampiltabel() {
+    model = new DefaultTableModel();
+    model.addColumn("NO KTP");
+    model.addColumn("Nama Pembeli");
+    model.addColumn("Alamat");
+    model.addColumn("NO HP");
+    tblpelanggan.setModel(model);
+    try {
+        this.stat = k.getCon().prepareStatement("select * from pembeli");
+        this.rs = this.stat.executeQuery();
+        while (rs.next()) {
+            Object [] data = {
+                rs.getString(1),
+                rs.getString(2),
+                rs.getString(3),
+                rs.getString(4)
+            };
+            model.addRow(data);
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,56 +72,56 @@ public class MenuDataPembeli extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        lbljudul = new javax.swing.JLabel();
+        btnkembali = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        lblktp = new javax.swing.JLabel();
+        lblnama = new javax.swing.JLabel();
+        textnama = new javax.swing.JTextField();
+        lblalamat = new javax.swing.JLabel();
+        textalamat = new javax.swing.JTextField();
+        lblnohp = new javax.swing.JLabel();
+        textnohp = new javax.swing.JTextField();
+        textktp = new javax.swing.JTextField();
+        btntambah = new javax.swing.JButton();
+        btnubah = new javax.swing.JButton();
+        btnhapus = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblpelanggan = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(153, 0, 0));
 
-        jLabel1.setFont(new java.awt.Font("Script MT Bold", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Halaman Data Mobil");
+        lbljudul.setFont(new java.awt.Font("Script MT Bold", 1, 24)); // NOI18N
+        lbljudul.setForeground(new java.awt.Color(255, 255, 255));
+        lbljudul.setText("Halaman Data Mobil");
 
-        jButton1.setBackground(new java.awt.Color(204, 204, 255));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setText("Kembali");
+        btnkembali.setBackground(new java.awt.Color(204, 204, 255));
+        btnkembali.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnkembali.setText("Kembali");
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 153));
 
-        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jLabel2.setText("No  KTP");
+        lblktp.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        lblktp.setText("No  KTP");
 
-        jTextField1.addActionListener(this::jTextField1ActionPerformed);
+        lblnama.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        lblnama.setText("Nama");
 
-        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jLabel3.setText("Nama");
+        textnama.addActionListener(this::textnamaActionPerformed);
 
-        jTextField2.addActionListener(this::jTextField2ActionPerformed);
+        lblalamat.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        lblalamat.setText("Alamat");
 
-        jLabel4.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jLabel4.setText("Alamat");
+        textalamat.addActionListener(this::textalamatActionPerformed);
 
-        jTextField3.addActionListener(this::jTextField3ActionPerformed);
+        lblnohp.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        lblnohp.setText("No HP");
 
-        jLabel5.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jLabel5.setText("No HP");
+        textnohp.addActionListener(this::textnohpActionPerformed);
 
-        jTextField4.addActionListener(this::jTextField4ActionPerformed);
+        textktp.addActionListener(this::textktpActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -87,22 +130,22 @@ public class MenuDataPembeli extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
+                    .addComponent(lblnohp)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3))
+                                    .addComponent(lblalamat)
+                                    .addComponent(lblnama))
                                 .addGap(47, 47, 47))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(lblktp)
                                 .addGap(41, 41, 41)))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(textalamat, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textnohp, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textnama, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textktp, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -110,35 +153,37 @@ public class MenuDataPembeli extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblktp)
+                    .addComponent(textktp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblnama)
+                    .addComponent(textnama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblalamat)
+                    .addComponent(textalamat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblnohp)
+                    .addComponent(textnohp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
-        jButton2.setBackground(new java.awt.Color(204, 255, 204));
-        jButton2.setText("Tambah");
-        jButton2.addActionListener(this::jButton2ActionPerformed);
+        btntambah.setBackground(new java.awt.Color(204, 255, 204));
+        btntambah.setText("Tambah");
+        btntambah.addActionListener(this::btntambahActionPerformed);
 
-        jButton3.setBackground(new java.awt.Color(204, 204, 255));
-        jButton3.setText("Ubah");
+        btnubah.setBackground(new java.awt.Color(204, 204, 255));
+        btnubah.setText("Ubah");
+        btnubah.addActionListener(this::btnubahActionPerformed);
 
-        jButton4.setBackground(new java.awt.Color(255, 204, 255));
-        jButton4.setText("Hapus");
+        btnhapus.setBackground(new java.awt.Color(255, 204, 255));
+        btnhapus.setText("Hapus");
+        btnhapus.addActionListener(this::btnhapusActionPerformed);
 
-        jTable1.setBackground(new java.awt.Color(255, 204, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblpelanggan.setBackground(new java.awt.Color(255, 204, 255));
+        tblpelanggan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -149,7 +194,12 @@ public class MenuDataPembeli extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tblpelanggan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblpelangganMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblpelanggan);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -159,18 +209,18 @@ public class MenuDataPembeli extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(jButton1)
+                        .addComponent(btnkembali)
                         .addGap(96, 96, 96)
-                        .addComponent(jLabel1))
+                        .addComponent(lbljudul))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(49, 49, 49)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton2)
+                                .addComponent(btntambah)
                                 .addGap(106, 106, 106)
-                                .addComponent(jButton3)
+                                .addComponent(btnubah)
                                 .addGap(82, 82, 82)
-                                .addComponent(jButton4))
+                                .addComponent(btnhapus))
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
@@ -182,15 +232,15 @@ public class MenuDataPembeli extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel1))
+                    .addComponent(btnkembali)
+                    .addComponent(lbljudul))
                 .addGap(26, 26, 26)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btntambah)
+                    .addComponent(btnubah)
+                    .addComponent(btnhapus))
                 .addGap(32, 32, 32)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(48, Short.MAX_VALUE))
@@ -215,25 +265,74 @@ public class MenuDataPembeli extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void textnamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textnamaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_textnamaActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void textalamatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textalamatActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_textalamatActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void textnohpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textnohpActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_textnohpActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    private void btntambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntambahActionPerformed
+       try{
+        pembeli p = new pembeli();
+        this.stat = k.getCon().prepareStatement("insert into pembeli values(?,?,?,?)");
+        stat.setString(1, p.ktp);
+        stat.setString(2, p.nama);
+        stat.setString(3, p.alamat);
+        stat.setString(4, p.telp);
+        stat.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
+        Tampiltabel();
+    }
+    catch(Exception e){
+        JOptionPane.showMessageDialog(null, e.getMessage());
+    }
+    }//GEN-LAST:event_btntambahActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void textktpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textktpActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_textktpActionPerformed
+
+    private void btnubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnubahActionPerformed
+        try {
+        pembeli p = new pembeli();
+        this.stat = k.getCon().prepareStatement("update pembeli set nama_pembeli=?, alamat_pembeli=?, tlp_pembeli=? where ktp=?");
+        stat.setString(1, p.nama);
+        stat.setString(2, p.alamat);
+        stat.setString(3, p.telp);
+        stat.setString(4, p.ktp);
+        stat.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Data berhasil diubah");
+        Tampiltabel();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+    }
+    }//GEN-LAST:event_btnubahActionPerformed
+
+    private void btnhapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhapusActionPerformed
+       try {
+        pembeli p = new pembeli();
+        this.stat = k.getCon().prepareStatement("delete from pembeli where ktp=?");
+        stat.setString(1, p.ktp);
+        stat.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+        Tampiltabel();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+    }
+    }//GEN-LAST:event_btnhapusActionPerformed
+
+    private void tblpelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblpelangganMouseClicked
+        textktp.setText(model.getValueAt(tblpelanggan.getSelectedRow(), 0).toString());
+        textnama.setText(model.getValueAt(tblpelanggan.getSelectedRow(), 1).toString());
+        textalamat.setText(model.getValueAt(tblpelanggan.getSelectedRow(), 2).toString());
+        textnohp.setText(model.getValueAt(tblpelanggan.getSelectedRow(), 3).toString());
+    }//GEN-LAST:event_tblpelangganMouseClicked
 
     /**
      * @param args the command line arguments
@@ -252,7 +351,7 @@ public class MenuDataPembeli extends javax.swing.JFrame {
                 }
             }
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            
         }
         //</editor-fold>
 
@@ -261,22 +360,22 @@ public class MenuDataPembeli extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JButton btnhapus;
+    private javax.swing.JButton btnkembali;
+    private javax.swing.JButton btntambah;
+    private javax.swing.JButton btnubah;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel lblalamat;
+    private javax.swing.JLabel lbljudul;
+    private javax.swing.JLabel lblktp;
+    private javax.swing.JLabel lblnama;
+    private javax.swing.JLabel lblnohp;
+    private javax.swing.JTable tblpelanggan;
+    private javax.swing.JTextField textalamat;
+    private javax.swing.JTextField textktp;
+    private javax.swing.JTextField textnama;
+    private javax.swing.JTextField textnohp;
     // End of variables declaration//GEN-END:variables
 }

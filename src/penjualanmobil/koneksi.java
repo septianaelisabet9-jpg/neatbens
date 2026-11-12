@@ -19,6 +19,11 @@ public class koneksi {
     private final String password = "";
     private Connection con;
 
+    // Tambahkan konstruktor ini agar connect() otomatis terpanggil
+    public koneksi() {
+        connect();
+    }
+
     public void connect() {
         try {
             con = DriverManager.getConnection(url, username, password);
